@@ -11,8 +11,8 @@ const MODES = {
     emoji: '🚀',
     timeSinceLastBlink: 3000,
     minBlinksPerMinute: 12,
-    reminderCooldown: 20000,
-    description: '<strong>Strict:</strong> Reminder every 20s if you blink less than 12 times/min or haven\'t blinked in 3s. Best for demos and maximum eye health.'
+    reminderCooldown: 10000,
+    description: '<strong>Strict:</strong> Reminder every 10s if you blink less than 12 times/min or haven\'t blinked in 3s. Best for demos and maximum eye health.'
   },
   balanced: {
     name: 'Balanced',

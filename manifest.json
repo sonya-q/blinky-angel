@@ -9,7 +9,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "eye.png"
+    "default_icon": "Happy.png"
   },
   "content_scripts": [
     {
@@ -21,7 +21,14 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["tf-inject.js", "eye.png"],
+      "resources": [
+        "tf-inject.js",
+        "Happy.png",
+        "EyesOpen.png",
+        "EyesClosed.png",
+        "sideToSide.png",
+        "SideToSide2.png"
+      ],
       "matches": ["<all_urls>"]
     }
   ]

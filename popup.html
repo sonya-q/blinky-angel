@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
-  <style>
+  <style> 
     body {
       width: 340px;
       padding: 0;
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #ed96c5 0%, #764ba2 100%);
       color: white;
+    }
+
+        /* Apply Pixelify Sans to all headings */
+    h1, h2, h3, h4, h5, h6,
+    .header h1,
+    .settings-title,
+    .stat-label,
+    .status-text {
+      font-family: "Pixelify Sans", Arial, sans-serif;
     }
     
     /* Header */
@@ -24,7 +36,7 @@
     }
     .header h1 {
       margin: 0;
-      font-size: 24px;
+      font-size: 40px;
     }
     
     /* Tab Navigation */
@@ -246,7 +258,7 @@
 <body>
   <!-- Header -->
   <div class="header">
-    <div class="emoji" id="header-emoji">👁️</div>
+    <img src="Happy.png" class="emoji" alt="Blinky Angel">
     <h1>Blinky Angel</h1>
   </div>
   
@@ -312,7 +324,7 @@
     <div class="timer-status">
       <div class="big-emoji" id="timer-emoji">⏸️</div>
       <div class="status-text" id="timer-status">Ready to start</div>
-      <div class="timer-display" id="timer-display">--:--</div>
+      <!-- <div class="timer-display" id="timer-display">--:--</div> -->
     </div>
     
     <button id="startTimerButton">▶️ Start 20-20-20 Timer</button>

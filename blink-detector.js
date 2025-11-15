@@ -1,10 +1,242 @@
 // blink-detector.js
-// Handles both blink detection and 20-20-20 timer UI
+// Unified Pig Widget - Handles both blink reminders and 20-20-20 timer
 
-console.log("👼 Blinky Angel loaded!");
+console.log("🐷 Blinky Angel (Pig Edition) loaded!");
 
 // ============================================
-// PART 1: BLINK DETECTION
+// PART 1: PIG WIDGET SETUP
+// ============================================
+
+let pigWidget = null;
+let pigSpeechBubble = null;
+let isHidden = false;
+let currentPigState = 'idle'; // idle, blinking, happy, talking
+
+// Pig image states
+const PIG_IMAGES = {
+  idle: chrome.runtime.getURL('EyesOpen.png'),
+  blinking: chrome.runtime.getURL('EyesClosed.png'),
+  happy: chrome.runtime.getURL('Happy.png'),
+  lookingAround: chrome.runtime.getURL('sideToSide.png')
+};
+
+function createPigWidget() {
+  // Create main pig container
+  pigWidget = document.createElement('div');
+  pigWidget.id = 'pig-widget';
+  pigWidget.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    height: 120px;
+    z-index: 999999;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+  `;
+  
+  // Create pig image
+  const pigImage = document.createElement('img');
+  pigImage.id = 'pig-image';
+  pigImage.src = PIG_IMAGES.idle;
+  pigImage.style.cssText = `
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease;
+  `;
+  
+  pigWidget.appendChild(pigImage);
+  
+  // Create speech bubble
+  pigSpeechBubble = document.createElement('div');
+  pigSpeechBubble.id = 'pig-speech';
+  pigSpeechBubble.style.cssText = `
+    position: absolute;
+    bottom: 130px;
+    right: 0;
+    background: white;
+    color: #333;
+    padding: 12px 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    max-width: 250px;
+    display: none;
+    z-index: 1000000;
+    animation: bounceIn 0.4s ease;
+  `;
+  
+  // Speech bubble arrow
+  const arrow = document.createElement('div');
+  arrow.style.cssText = `
+    position: absolute;
+    bottom: -8px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid white;
+  `;
+  pigSpeechBubble.appendChild(arrow);
+  
+  // Close button on speech bubble
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '×';
+  closeBtn.style.cssText = `
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+  `;
+  closeBtn.onclick = (e) => {
+    e.stopPropagation();
+    hideSpeech();
+  };
+  pigSpeechBubble.appendChild(closeBtn);
+  
+  // Message container
+  const messageDiv = document.createElement('div');
+  messageDiv.id = 'pig-message';
+  messageDiv.style.paddingRight = '20px';
+  pigSpeechBubble.appendChild(messageDiv);
+  
+  pigWidget.appendChild(pigSpeechBubble);
+  
+  // Hover effects
+  pigWidget.onmouseenter = () => {
+    if (!isHidden) {
+      pigImage.style.transform = 'scale(1.1) rotate(-5deg)';
+    }
+  };
+  pigWidget.onmouseleave = () => {
+    pigImage.style.transform = 'scale(1) rotate(0deg)';
+  };
+  
+  // Click to hide/show
+  pigWidget.onclick = () => {
+    if (pigSpeechBubble.style.display === 'block') {
+      hideSpeech();
+    } else {
+      togglePigVisibility();
+    }
+  };
+  
+  document.body.appendChild(pigWidget);
+  
+  // Add CSS animations
+  addPigAnimations();
+  
+  // Show initial greeting
+  setTimeout(() => {
+    showPigMessage("Hi! I'm here to help protect your eyes! 👁️", 'happy', 4000);
+  }, 1000);
+}
+
+function addPigAnimations() {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function setPigImage(state) {
+  const pigImage = document.getElementById('pig-image');
+  if (pigImage && PIG_IMAGES[state]) {
+    pigImage.src = PIG_IMAGES[state];
+    currentPigState = state;
+  }
+}
+
+function showPigMessage(message, pigState = 'idle', duration = 5000, showCloseButton = true) {
+  if (isHidden) {
+    // Make pig visible when showing message
+    showPig();
+  }
+  
+  setPigImage(pigState);
+  
+  const messageDiv = document.getElementById('pig-message');
+  const closeBtn = pigSpeechBubble.querySelector('button');
+  
+  messageDiv.innerHTML = message;
+  closeBtn.style.display = showCloseButton ? 'block' : 'none';
+  pigSpeechBubble.style.display = 'block';
+  
+  // Wiggle animation
+  pigWidget.style.animation = 'wiggle 0.5s ease';
+  setTimeout(() => {
+    pigWidget.style.animation = '';
+  }, 500);
+  
+  // Auto-hide after duration
+  if (duration > 0) {
+    setTimeout(() => {
+      hideSpeech();
+    }, duration);
+  }
+}
+
+function hideSpeech() {
+  pigSpeechBubble.style.display = 'none';
+  setPigImage('idle');
+}
+
+function togglePigVisibility() {
+  if (isHidden) {
+    showPig();
+  } else {
+    hidePig();
+  }
+}
+
+function hidePig() {
+  isHidden = true;
+  pigWidget.style.transform = 'translateX(150px)';
+  pigWidget.style.opacity = '0.3';
+  hideSpeech();
+}
+
+function showPig() {
+  isHidden = false;
+  pigWidget.style.transform = 'translateX(0)';
+  pigWidget.style.opacity = '1';
+}
+
+// Initialize pig widget
+createPigWidget();
+
+// ============================================
+// PART 2: BLINK DETECTION INTEGRATION
 // ============================================
 
 // Inject TensorFlow script
@@ -43,7 +275,7 @@ function loadModeSettings(mode) {
     strict: {
       timeSinceLastBlink: 3000,
       minBlinksPerMinute: 12,
-      reminderCooldown: 20000
+      reminderCooldown: 10000
     },
     balanced: {
       timeSinceLastBlink: 8000,
@@ -68,42 +300,6 @@ function loadModeSettings(mode) {
   }, '*');
 }
 
-// Create blink widget
-function createBlinkyWidget() {
-  const widget = document.createElement('div');
-  widget.id = 'blinky-angel-widget';
-  widget.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 50%;
-    z-index: 999999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 50px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease;
-  `;
-  widget.textContent = '👁️';
-  
-  widget.onmouseenter = () => {
-    widget.style.transform = 'scale(1.1)';
-  };
-  widget.onmouseleave = () => {
-    widget.style.transform = 'scale(1)';
-  };
-  
-  document.body.appendChild(widget);
-  return widget;
-}
-
-const widget = createBlinkyWidget();
-
 // Blink detection message handlers
 let lastReminderTime = 0;
 
@@ -116,24 +312,24 @@ window.addEventListener("message", (event) => {
   switch (type) {
     case "BLINK_DETECTED":
       console.log("Blink rate:", data.blinksPerMinute, "blinks/min");
-      widget.textContent = '😊';
+      // Quick blink animation
+      setPigImage('blinking');
       setTimeout(() => {
-        widget.textContent = '👁️';
-      }, 200);
+        setPigImage('idle');
+      }, 150);
       break;
       
     case "LOW_BLINK_RATE":
       const now = Date.now();
       if (now - lastReminderTime > currentSettings.reminderCooldown) {
-        showBlinkReminder();
+        showBlinkReminder(data.blinksPerMinute);
         lastReminderTime = now;
       }
       break;
       
     case "ERROR":
       console.error("CV Error:", message);
-      widget.textContent = '⚠️';
-      widget.title = message;
+      showPigMessage(`⚠️ ${message}`, 'idle', 5000);
       break;
       
     case "STATS_UPDATE":
@@ -154,108 +350,77 @@ window.addEventListener("message", (event) => {
   }
 });
 
-function showBlinkReminder() {
-  widget.style.transform = 'scale(1.3)';
-  widget.textContent = '😮';
+function showBlinkReminder(blinksPerMinute) {
+  const messages = [
+    "💧 Oink! Time to blink more!",
+    "👀 Don't forget to blink, friend!",
+    "💙 Your eyes need some love - blink please!",
+    "✨ Blink break! Your eyes will thank you!"
+  ];
   
-  const reminder = document.createElement('div');
-  reminder.style.cssText = `
-    position: fixed;
-    bottom: 140px;
-    right: 20px;
-    background: white;
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    z-index: 999999;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    max-width: 200px;
-    animation: slideIn 0.3s ease;
-  `;
-  reminder.innerHTML = `
-    <div style="font-weight: bold; margin-bottom: 5px;">💧 Time to blink!</div>
-    <div style="color: #666;">Your blink rate is low. Remember to blink regularly!</div>
-  `;
+  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+  const fullMessage = `<strong>${randomMessage}</strong><br><small>Current rate: ${blinksPerMinute}/min (healthy: 15-20/min)</small>`;
   
-  document.body.appendChild(reminder);
-  
-  setTimeout(() => {
-    reminder.remove();
-    widget.style.transform = 'scale(1)';
-    widget.textContent = '👁️';
-  }, 5000);
+  showPigMessage(fullMessage, 'lookingAround', 6000);
 }
 
 // ============================================
-// PART 2: 20-20-20 TIMER UI
+// PART 3: 20-20-20 TIMER INTEGRATION
 // ============================================
 
-let timerContainer = null;
+let currentTimerMessage = null;
 
-function createTimerUI() {
-  if (document.getElementById('timer-container')) {
-    timerContainer = document.getElementById('timer-container');
-    return;
-  }
-
-  timerContainer = document.createElement('div');
-  timerContainer.id = 'timer-container';
-  timerContainer.className = 'timer-popup hidden';
-  timerContainer.innerHTML = `
-    <div id="workingScreen" class="hidden">
-      <div class="angel">✨</div>
-      <h1>I'm watching over you</h1>
-      <p>Next break in: <span id="timeRemaining">20:00</span></p>
-      <p class="small-note">Will disappear in 3 seconds</p>
-    </div>
-
-    <div id="breakScreen" class="hidden">
-      <div class="angel">👀</div>
-      <h1>Time for a break!</h1>
-      <p>Look 20 feet away</p>
-      <div class="timer-display" id="breakTimer">20</div>
-      <p class="small-note">seconds remaining</p>
-    </div>
-
-    <div id="readyScreen" class="hidden">
-      <div class="angel">💪</div>
-      <h1>Great job!</h1>
-      <p>Ready for next session?</p>
-      <button id="continueButton">Continue</button>
-    </div>
-  `;
-
-  document.body.appendChild(timerContainer);
-  
-  document.getElementById('continueButton').addEventListener('click', () => {
-    chrome.runtime.sendMessage({action: 'continue'});
-  });
-}
-
-createTimerUI();
-
-function showTimerScreen(screenName) {
-  document.getElementById('workingScreen').classList.add('hidden');
-  document.getElementById('breakScreen').classList.add('hidden');
-  document.getElementById('readyScreen').classList.add('hidden');
-  
-  document.getElementById(screenName + 'Screen').classList.remove('hidden');
-}
-
-function updateTimeDisplay(seconds) {
+function showTimerWorking(seconds) {
   const minutes = Math.floor(seconds / 60);
   const secs = seconds % 60;
-  document.getElementById('timeRemaining').textContent = 
-    `${minutes}:${secs.toString().padStart(2, '0')}`;
+  const timeString = `${minutes}:${secs.toString().padStart(2, '0')}`;
+  
+  showPigMessage(
+    `<strong>✨ I'm watching over you!</strong><br><small>Next break in: ${timeString}</small>`,
+    'happy',
+    3000,
+    false
+  );
 }
 
-function updateBreakDisplay(seconds) {
-  document.getElementById('breakTimer').textContent = seconds;
+function showTimerBreak(seconds) {
+  showPigMessage(
+    `<strong>👀 Time for a 20-20-20 break!</strong><br>Look 20 feet away<br><div style="font-size: 32px; font-weight: bold; margin: 8px 0; color: #764ba2;">${seconds}</div><small>seconds remaining</small>`,
+    'lookingAround',
+    0, // Don't auto-hide
+    true
+  );
+}
+
+function updateTimerBreak(seconds) {
+  const messageDiv = document.getElementById('pig-message');
+  if (messageDiv && pigSpeechBubble.style.display === 'block') {
+    messageDiv.innerHTML = `<strong>👀 Time for a 20-20-20 break!</strong><br>Look 20 feet away<br><div style="font-size: 32px; font-weight: bold; margin: 8px 0; color: #764ba2;">${seconds}</div><small>seconds remaining</small>`;
+  }
+}
+
+function showTimerReady() {
+  showPigMessage(
+    `<strong>💪 Great job!</strong><br>You completed your break!<br><button id="pig-continue-btn" style="margin-top: 8px; background: #764ba2; color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold;">Continue</button>`,
+    'happy',
+    0,
+    true
+  );
+  
+  // Add continue button listener
+  setTimeout(() => {
+    const continueBtn = document.getElementById('pig-continue-btn');
+    if (continueBtn) {
+      continueBtn.onclick = () => {
+        chrome.runtime.sendMessage({action: 'continue'});
+        hideSpeech();
+      };
+    }
+  }, 100);
 }
 
 // ============================================
-// PART 3: MESSAGE HANDLERS (Both Features)
+// PART 4: MESSAGE HANDLERS (Both Features)
 // ============================================
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -272,23 +437,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   
   // 20-20-20 timer messages
   else if (request.action === 'showUI') {
-    showTimerScreen('working');
-    updateTimeDisplay(request.seconds);
-    timerContainer.classList.remove('hidden');
+    showTimerWorking(request.seconds);
   } else if (request.action === 'hideUI') {
-    timerContainer.classList.add('hidden');
+    hideSpeech();
   } else if (request.action === 'updateTime') {
-    updateTimeDisplay(request.seconds);
+    // Don't show updates, timer is hidden after 3 seconds
   } else if (request.action === 'showBreak') {
-    showTimerScreen('break');
-    updateBreakDisplay(request.seconds);
-    timerContainer.classList.remove('hidden');
+    showTimerBreak(request.seconds);
   } else if (request.action === 'updateBreak') {
-    updateBreakDisplay(request.seconds);
+    updateTimerBreak(request.seconds);
   } else if (request.action === 'showReady') {
-    showTimerScreen('ready');
-    timerContainer.classList.remove('hidden');
+    showTimerReady();
   }
 });
 
-console.log("✅ Blinky Angel fully initialized!");
+console.log("✅ Blinky Angel (Pig Edition) fully initialized!");
