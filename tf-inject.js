@@ -10,7 +10,8 @@
   function loadTensorFlow() {
     return new Promise((resolve, reject) => {
       const tfScript = document.createElement('script');
-      tfScript.src = chrome.runtime.getURL('libs/tf.min.js');
+      // Use the URL injected by the content script, or fallback to CDN
+      tfScript.src = window.BLINKY_TF_URL || 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0/dist/tf.min.js';
       tfScript.onload = () => {
         console.log("✅ TensorFlow.js loaded! Version:", window.tf.version.tfjs);
         resolve();
