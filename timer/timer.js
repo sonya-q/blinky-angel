@@ -20,25 +20,27 @@ function startTimer() {
   console.log('Timer started!');
   showScreen('working');
 
-  secondsRemaining = 20;          // TEST
-  // secondsRemaining = 1200;   // REAL
+  secondsRemaining = 5; // TEST value
 
   updateTimeDisplay();
 
+  // Start the countdown
   workTimerInterval = setInterval(() => {
     secondsRemaining--;
     updateTimeDisplay();
 
     if (secondsRemaining <= 0) {
       clearInterval(workTimerInterval);
-      startBreak();
+      startBreak(); // show the break screen when timer hits 0
     }
   }, 1000);
 
+  // Hide the working screen visually after 3 seconds
   setTimeout(() => {
-    console.log('Popup would close here');
+    document.getElementById('workingScreen').classList.add('hidden');
   }, 3000);
 }
+
 
 // Update the time remaining display
 function updateTimeDisplay() {
