@@ -3,8 +3,22 @@
   "description": "Helps keep your eyes healthy!",
   "version": "1.0",
   "manifest_version": 3,
+  "permissions": ["activeTab", "scripting"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/*"],
+      "js": ["timer/timer.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["tf-inject.js", "eye.png", "libs/tf.min.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "action": {
-    "default_popup": "blink-detector.html",
+    "default_popup": "timer/timer.html",
     "default_icon": "eye.png"
   }
 }
