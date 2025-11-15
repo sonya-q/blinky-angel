@@ -20,7 +20,7 @@ function startTimer() {
   console.log('Timer started!');
   showScreen('working');
 
-  secondsRemaining = 5; // TEST value
+  secondsRemaining = 10; // TEST value
 
   updateTimeDisplay();
 
@@ -79,3 +79,26 @@ function startNextSession() {
 }
 
 console.log('Timer popup loaded! Click Start to begin.');
+
+// Wait for DOM to load, then attach event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM ready! Attaching event listeners...');
+  
+  // Connect the Start button to the startTimer function
+  const startBtn = document.getElementById('startButton');
+  if (startBtn) {
+    startBtn.addEventListener('click', startTimer);
+    console.log('Start button listener attached!');
+  } else {
+    console.error('Start button not found!');
+  }
+  
+  // Connect the Continue button to the startNextSession function
+  const continueBtn = document.getElementById('continueButton');
+  if (continueBtn) {
+    continueBtn.addEventListener('click', startNextSession);
+    console.log('Continue button listener attached!');
+  } else {
+    console.error('Continue button not found!');
+  }
+});
