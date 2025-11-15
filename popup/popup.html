@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 300px;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .angel {
+      font-size: 60px;
+    }
+    h1 {
+      margin: 10px 0;
+    }
+    button {
+      background: white;
+      color: #764ba2;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin: 10px 0;
+      width: 100%;
+    }
+    button:hover {
+      background: #f0f0f0;
+    }
+    #status {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="angel">👼</div>
+  <h1>Blinky Angel</h1>
+  <p>Protect your eyes!</p>
+  
+  <button id="startButton">Start Watching</button>
+  <button id="stopButton" style="display: none;">Stop</button>
+  
+  <div id="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <!-- This will be injected into web pages -->
+  <div class="popupContainer" id="blinkyContainer">
+    <!-- first screen: welcome -->
+    <div id="welcomeScreen">
+      <div class="angel">👼</div>
+      <h1>Hello!</h1>
+      <p>Ready to protect your eyes?</p>
+      <button id="startButton">Start</button>
+    </div>
+
+    <!-- second screen: working -->
+    <div id="workingScreen" class="hidden">
+      <div class="angel">✨</div>
+      <h1>Great! I'm watching over you</h1>
+      <p>Next break in: <span id="timeRemaining">20:00</span></p>
+      <p class="small-note">Working... will disappear in 3 seconds</p>
+    </div>
+
+    <!-- third screen: break time! -->
+    <div id="breakScreen" class="hidden">
+      <div class="angel">👀</div>
+      <h1>Time for a break!</h1>
+      <p>Look at something 20 feet away</p>
+      <div class="timer-display" id="breakTimer">20</div>
+      <p class="small-note">seconds remaining</p>
+    </div>
+
+    <!-- fourth screen: ready to go again? -->
+    <div id="readyScreen" class="hidden">
+      <div class="angel">💪</div>
+      <h1>Great job!</h1>
+      <p>Ready for your next session?</p>
+      <button id="continueButton">Continue</button>
+    </div>
+  </div>
+</body>
+</html>
