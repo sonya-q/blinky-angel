@@ -9,6 +9,7 @@ console.log("🐷 Blinky Angel (Pig Edition) loaded!");
 
 let pigWidget = null;
 let pigSpeechBubble = null;
+let hoverZone = null;
 let isHidden = false;
 let currentPigState = 'idle'; // idle, blinking, happy, talking
 
@@ -28,8 +29,8 @@ function createPigWidget() {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
     z-index: 999999;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -55,7 +56,7 @@ function createPigWidget() {
   pigSpeechBubble.id = 'pig-speech';
   pigSpeechBubble.style.cssText = `
     position: absolute;
-    bottom: 130px;
+    bottom: 190px;
     right: 0;
     background: white;
     color: #333;
@@ -136,6 +137,9 @@ function createPigWidget() {
   
   document.body.appendChild(pigWidget);
   
+  // Create hover zone for revealing hidden pig
+  createHoverZone();
+  
   // Add CSS animations
   addPigAnimations();
   
@@ -143,6 +147,29 @@ function createPigWidget() {
   setTimeout(() => {
     showPigMessage("Hi! I'm here to help protect your eyes! 👁️", 'happy', 4000);
   }, 1000);
+}
+
+function createHoverZone() {
+  hoverZone = document.createElement('div');
+  hoverZone.id = 'pig-hover-zone';
+  hoverZone.style.cssText = `
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    z-index: 999998;
+    pointer-events: auto;
+    display: none;
+  `;
+  
+  hoverZone.onmouseenter = () => {
+    if (isHidden) {
+      showPig();
+    }
+  };
+  
+  document.body.appendChild(hoverZone);
 }
 
 function addPigAnimations() {
@@ -221,15 +248,19 @@ function togglePigVisibility() {
 
 function hidePig() {
   isHidden = true;
-  pigWidget.style.transform = 'translateX(150px)';
+  pigWidget.style.transform = 'translateX(220px)';
   pigWidget.style.opacity = '0.3';
   hideSpeech();
+  // Show hover zone when pig is hidden
+  hoverZone.style.display = 'block';
 }
 
 function showPig() {
   isHidden = false;
   pigWidget.style.transform = 'translateX(0)';
   pigWidget.style.opacity = '1';
+  // Hide hover zone when pig is visible
+  hoverZone.style.display = 'none';
 }
 
 // Initialize pig widget
