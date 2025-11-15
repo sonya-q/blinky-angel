@@ -1,39 +1,39 @@
-.popupContainer {
+/* 20-20-20 Timer Popup Styles */
+.timer-popup {
   position: fixed;
   top: 50%;
   left: 20px;
   transform: translateY(-50%);
   width: 300px;
-  height: 400px;
-  background-color: rgb(246, 219, 224); /* YOUR PINK! */
+  background-color: rgb(246, 219, 224);
   padding: 20px;
   text-align: center;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  z-index: 999999;
+  z-index: 999998;
   font-family: Arial, sans-serif;
 }
 
-.popupContainer.hidden {
+.timer-popup.hidden {
   display: none !important;
 }
 
-.angel {
+.timer-popup .angel {
   font-size: 50px;
   margin: 20px 0;
 }
 
-.hidden {
+.timer-popup .hidden {
   display: none;
 }
 
-.small-note {
+.timer-popup .small-note {
   font-size: 12px;
   color: #666;
   margin-top: 10px;
 }
 
-button {
+.timer-popup button {
   background-color: #764ba2;
   color: white;
   border: none;
@@ -44,22 +44,29 @@ button {
   margin-top: 15px;
 }
 
-button:hover {
+.timer-popup button:hover {
   background-color: #667eea;
 }
 
-.timer-display {
+.timer-popup .timer-display {
   font-size: 48px;
   font-weight: bold;
   color: #764ba2;
   margin: 20px 0;
 }
 
-h1 {
+.timer-popup h1 {
   font-size: 20px;
   margin: 10px 0;
+  color: #333;
 }
 
-p {
+.timer-popup p {
   margin: 5px 0;
+  color: #333;
+}
+
+/* Additional utility classes */
+.hidden {
+  display: none !important;
 }

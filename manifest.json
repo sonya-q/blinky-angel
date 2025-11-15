@@ -1,22 +1,28 @@
 {
   "name": "Blinky Angel",
-  "description": "Helps keep your eyes healthy!",
+  "description": "Protect your eyes with blink detection and 20-20-20 reminders!",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage", "tabs"],
+  "permissions": ["storage", "tabs", "activeTab", "scripting"],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup/popup.html",
+    "default_popup": "popup.html",
     "default_icon": "eye.png"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content/content.js"],
+      "js": ["blink-detector.js"],
       "css": ["content/content.css"],
-      "run_at": "document_end"
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["tf-inject.js", "eye.png"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
