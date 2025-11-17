@@ -82,7 +82,7 @@ In the file picker, select and open the folder "blinky-angel" from wherever you 
 
 You should now see “Blinky Angel” appear in your list of extensions.
 
-4. Grant Permissions & Start Using
+### 3. Grant Permissions & Start Using
 
 Make sure the extension is enabled (toggle in chrome://extensions is on).
 
