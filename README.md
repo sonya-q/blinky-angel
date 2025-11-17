@@ -147,4 +147,4 @@ No images, video, or blink data are sent to any external servers
 This extension is designed as a wellness tool, not a data collection tool
 
 ## Authors
-Ariel Liu, Sonya Chen
+Ariel Liu, Sonya Qu
