@@ -15,10 +15,10 @@ let currentPigState = 'idle'; // idle, blinking, happy, talking
 
 // Pig image states
 const PIG_IMAGES = {
-  idle: chrome.runtime.getURL('EyesOpen.png'),
-  blinking: chrome.runtime.getURL('EyesClosed.png'),
-  happy: chrome.runtime.getURL('Happy.png'),
-  lookingAround: chrome.runtime.getURL('sideToSide.png')
+  idle: chrome.runtime.getURL('assets/EyesOpen.png'),
+  blinking: chrome.runtime.getURL('assets/EyesClosed.png'),
+  happy: chrome.runtime.getURL('assets/Happy.png'),
+  lookingAround: chrome.runtime.getURL('assets/sideToSide.png')
 };
 
 function createPigWidget() {
@@ -273,8 +273,7 @@ createPigWidget();
 // Inject TensorFlow script
 function injectTensorFlowScript() {
   const script = document.createElement('script');
-  script.src = chrome.runtime.getURL('tf-inject.js');
-  script.type = "text/javascript";
+  script.src = chrome.runtime.getURL('content/tf-inject.js');  script.type = "text/javascript";
   (document.head || document.documentElement).appendChild(script);
   
   script.onload = () => {

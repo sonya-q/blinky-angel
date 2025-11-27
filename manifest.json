@@ -8,13 +8,13 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": "Happy.png"
+    "default_popup": "popup/popup.html",
+    "default_icon": "assets/Happy.png"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["blink-detector.js"],
+      "js": ["content/blink-detector.js"],
       "css": ["content/content.css"],
       "run_at": "document_idle"
     }
@@ -22,12 +22,12 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "tf-inject.js",
-        "Happy.png",
-        "EyesOpen.png",
-        "EyesClosed.png",
-        "sideToSide.png",
-        "SideToSide2.png"
+        "content/tf-inject.js",
+        "assets/Happy.png",
+        "assets/EyesOpen.png",
+        "assets/EyesClosed.png",
+        "assets/sideToSide.png",
+        "assets/SideToSide2.png"
       ],
       "matches": ["<all_urls>"]
     }
