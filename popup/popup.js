@@ -8,15 +8,13 @@
 const MODES = {
   strict: {
     name: 'Strict',
-    emoji: '🚀',
     timeSinceLastBlink: 3000,
     minBlinksPerMinute: 12,
     reminderCooldown: 10000,
-    description: '<strong>Strict:</strong> Reminder every 10s if you blink less than 12 times/min or haven\'t blinked in 3s. Best for demos and maximum eye health.'
+    description: '<strong>Strict:</strong> Reminder every 10s if you blink less than 12 times/min or haven\'t blinked in 3s. For maximum eye health.'
   },
   balanced: {
     name: 'Balanced',
-    emoji: '⚖️',
     timeSinceLastBlink: 8000,
     minBlinksPerMinute: 10,
     reminderCooldown: 45000,
@@ -24,7 +22,6 @@ const MODES = {
   },
   gentle: {
     name: 'Gentle',
-    emoji: '🌸',
     timeSinceLastBlink: 15000,
     minBlinksPerMinute: 7,
     reminderCooldown: 120000,
