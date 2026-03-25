@@ -1,5 +1,11 @@
 {
   "name": "Blinky Angel",
+  "icons": {
+    "16": "assets/Happy.png",
+    "32": "assets/Happy.png",
+    "48": "assets/Happy.png",
+    "128": "assets/Happy.png"
+  },
   "description": "Protect your eyes with blink detection and 20-20-20 reminders!",
   "version": "1.0",
   "manifest_version": 3,
