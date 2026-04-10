@@ -9,7 +9,7 @@
   "description": "Protect your eyes with blink detection and 20-20-20 reminders!",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage", "tabs", "activeTab"],
+  "permissions": ["storage", "activeTab"],
   "background": {
     "service_worker": "background.js"
   },
