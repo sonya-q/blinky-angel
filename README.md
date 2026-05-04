@@ -1,5 +1,6 @@
-# Blinky Angel 👁️✨  
-*A Chrome extension that helps you blink more, rest your eyes, and reduce digital eye strain.*
+# Blinky Angel 👁️✨
+
+_A Chrome extension that helps you blink more, rest your eyes, and reduce digital eye strain._
 
 ---
 
@@ -7,10 +8,10 @@
 
 When we stare at screens, our natural blink rate drops from about **15–20 blinks/minute** to as low as **5–7 blinks/minute**. This reduced blinking leads to **dry eyes, headaches, blurred vision, and digital eye strain**, especially for:
 
-- Students and remote workers with long screen hours  
-- Neurodivergent users who hyperfocus  
-- Low-vision users who rely heavily on screens  
-- Anyone working in front of a monitor for extended periods  
+- Students and remote workers with long screen hours
+- Neurodivergent users who hyperfocus
+- Low-vision users who rely heavily on screens
+- Anyone working in front of a monitor for extended periods
 
 Most people **don’t notice when they stop blinking** — so they can’t correct it.
 
@@ -20,14 +21,14 @@ Most people **don’t notice when they stop blinking** — so they can’t corre
 
 ## ✨ What Blinky Angel Does
 
-- Uses **webcam + TensorFlow.js** to estimate your **blink rate in real time**  
-- Gently reminds you to blink if your blink rate stays low for a period of time  
-- Supports different reminder modes: **Strict**, **Balanced**, and **Gentle**  
+- Uses **webcam + TensorFlow.js** to estimate your **blink rate in real time**
+- Gently reminds you to blink if your blink rate stays low for a period of time
+- Supports different reminder modes: **Strict**, **Balanced**, and **Gentle**
 - Automatically applies the **20-20-20 rule**:
-  - Every 20 minutes, it prompts you to look away for 20 seconds  
+  - Every 20 minutes, it prompts you to look away for 20 seconds
 - Shows a small on-screen character (“Blinky Angel”) that:
-  - Appears at the edge of your screen  
-  - Animates to get your attention when it’s time to blink or take a break  
+  - Appears at the edge of your screen
+  - Animates to get your attention when it’s time to blink or take a break
 
 All processing is done **on-device** in your browser. No images or data are sent to a server.
 
@@ -35,9 +36,9 @@ All processing is done **on-device** in your browser. No images or data are sent
 
 ## 🧰 Tech Stack
 
-- **Chrome Extension (Manifest V3)**  
-- **HTML, CSS, JavaScript**  
-- **TensorFlow.js** (via CDN) for real-time image/eye analysis  
+- **Chrome Extension (Manifest V3)**
+- **HTML, CSS, JavaScript**
+- **TensorFlow.js** (via CDN) for real-time image/eye analysis
 - Basic timers + state stored locally (Chrome storage or in-memory)
 
 ---
@@ -70,6 +71,7 @@ Load as an Unpacked Chrome Extension
 Open Google Chrome.
 
 Go to:
+
 ```bash
 chrome://extensions/
 ```
@@ -100,43 +102,43 @@ Click “Allow” so TensorFlow.js can analyze your eyes in real time
 
 Once enabled, the extension will:
 
-* Inject a small Blinky Angel widget into your active tabs
+- Inject a small Blinky Angel widget into your active tabs
 
-* Start monitoring your blinking (when you have the browser focused)
+- Start monitoring your blinking (when you have the browser focused)
 
-* Gently remind you to blink and follow the 20-20-20 rule
+- Gently remind you to blink and follow the 20-20-20 rule
 
 ### 🧪 How It Works (High-Level)
 
 1. Webcam Stream
 
-* The extension requests permission to use your webcam
+- The extension requests permission to use your webcam
 
-* Frames are processed directly in your browser
+- Frames are processed directly in your browser
 
 2. TensorFlow.js Model
 
-* TensorFlow.js (loaded via CDN) runs a pre-trained model
+- TensorFlow.js (loaded via CDN) runs a pre-trained model
 
-* It detects your face/eyes and outputs facial landmark positions
+- It detects your face/eyes and outputs facial landmark positions
 
 3. Blink Detection Logic
 
-* From the eye landmarks, we compute an eye aspect ratio (EAR)
+- From the eye landmarks, we compute an eye aspect ratio (EAR)
 
-* When EAR drops briefly below a threshold → we count a blink
+- When EAR drops briefly below a threshold → we count a blink
 
-* We track blinks over time to estimate blinks per minute
+- We track blinks over time to estimate blinks per minute
 
 4. Health Logic & Reminders
 
-* If blink rate stays too low for too long, Blinky Angel appears and reminds you to blink
+- If blink rate stays too low for too long, Blinky Angel appears and reminds you to blink
 
-* Every 20 minutes, it triggers the 20-20-20 reminder
+- Every 20 minutes, it triggers the 20-20-20 reminder
 
-* Different modes adjust how frequently reminders appear
+- Different modes adjust how frequently reminders appear
 
-* All of this happens locally in your browser tab.
+- All of this happens locally in your browser tab.
 
 ### 🔒 Privacy
 
@@ -147,4 +149,5 @@ No images, video, or blink data are sent to any external servers
 This extension is designed as a wellness tool, not a data collection tool
 
 ## Authors
+
 Ariel Liu, Sonya Chen
