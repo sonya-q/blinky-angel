@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-  <style> 
     body {
       width: 340px;
       padding: 0;
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ed96c5 0%, #764ba2 100%);
+      background: #e4a6c7;
       color: white;
     }
 
@@ -253,90 +245,3 @@
       background: rgba(255, 255, 255, 0.3);
       border-radius: 3px;
     }
-  </style>
-</head>
-<body>
-  <!-- Header -->
-  <div class="header">
-    <img src="Happy.png" class="emoji" alt="Blinky Angel">
-    <h1>Blinky Angel</h1>
-  </div>
-  
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class="tab active" data-tab="blink">👁️ Blink Monitor</button>
-    <button class="tab" data-tab="timer">⏰ 20-20-20</button>
-  </div>
-  
-  <!-- Tab 1: Blink Detection -->
-  <div class="tab-content active" id="blink-tab">
-    <div class="stat">
-      <div class="stat-label">Current Blink Rate</div>
-      <div class="stat-value" id="blink-rate">-- blinks/min</div>
-    </div>
-    
-    <div class="stat">
-      <div class="stat-label">Total Blinks</div>
-      <div class="stat-value" id="total-blinks">--</div>
-    </div>
-    
-    <div class="stat">
-      <div class="stat-label">Time Since Last Blink</div>
-      <div class="stat-value" id="time-since-blink">--</div>
-    </div>
-    
-    <!-- Settings Section -->
-    <div class="settings-section">
-      <div class="settings-title">⚙️ Reminder Mode</div>
-      
-      <div class="mode-buttons">
-        <div class="mode-btn" id="mode-strict" data-mode="strict">
-          🚀 Strict
-        </div>
-        <div class="mode-btn active" id="mode-balanced" data-mode="balanced">
-          ⚖️ Balanced
-        </div>
-        <div class="mode-btn" id="mode-gentle" data-mode="gentle">
-          🌸 Gentle
-        </div>
-      </div>
-      
-      <div class="mode-description" id="mode-desc">
-        <strong>Balanced:</strong> Reminder every 45s if you blink less than 10 times/min or haven't blinked in 8s. Good for most users.
-      </div>
-      
-      <div class="toggle-container">
-        <span class="toggle-label">Show Video Debug</span>
-        <div class="toggle-switch active" id="video-toggle">
-          <div class="toggle-slider"></div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="info">
-      💡 Healthy rate: 15-20 blinks/min<br>
-      Blink detection active on all pages!
-    </div>
-  </div>
-  
-  <!-- Tab 2: 20-20-20 Timer -->
-  <div class="tab-content" id="timer-tab">
-    <div class="timer-status">
-      <div class="big-emoji" id="timer-emoji">⏸️</div>
-      <div class="status-text" id="timer-status">Ready to start</div>
-      <!-- <div class="timer-display" id="timer-display">--:--</div> -->
-    </div>
-    
-    <button id="startTimerButton">▶️ Start 20-20-20 Timer</button>
-    <button id="stopTimerButton" style="display: none;">⏹️ Stop Timer</button>
-    
-    <div class="info" style="margin-top: 20px;">
-      📋 <strong>The 20-20-20 Rule:</strong><br>
-      Every 20 minutes, look at something 20 feet away for 20 seconds.<br><br>
-      💡 This reduces eye strain and keeps your eyes healthy!
-    </div>
-  </div>
-  
-  <script src="popup.js"></script>
-</body>
-</html>
